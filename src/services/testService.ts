@@ -11,14 +11,19 @@ export async function newTest(data: {
 	discipline: string;
 	teacher: string;
 }) {
-	await categoryService.findByName(data.category);
+	const { id: categoryId } = await categoryService.findByName(data.category);
 
 	await teacherService.findByName(data.teacher);
 
 	await disciplineService.findByName(data.discipline);
 
-	const { id } = await teacherDisciplineService.findByNames(
-		data.discipline,
-		data.teacher
-	);
+	const { id: teacherDisciplineId } =
+		await teacherDisciplineService.findByNames(data.discipline, data.teacher);
+
+	await testRepository.insert({
+		name: data.name,
+		pdfUrl: data.pdfUrl,
+		categoryId,
+		teacherDisciplineId,
+	});
 }
