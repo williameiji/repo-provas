@@ -8,3 +8,7 @@ export async function findByName(name: string) {
 
 	return teacher;
 }
+
+export async function sendTestsByTeachers() {
+	return teacherRepository.findTestsByTeachers();
+}

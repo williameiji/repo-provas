@@ -67,7 +67,7 @@ export async function sendTestsByDiscipline() {
 }
 
 export async function sendTestsByTeachers() {
-	const data = await teacherDisciplineService.sendTestsByTeachers();
+	const data = await teacherService.sendTestsByTeachers();
 
 	return data;
 }
