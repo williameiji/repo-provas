@@ -3,6 +3,7 @@ import * as teacherDisciplineService from "../services/teachersDisiciplineServic
 import * as teacherService from "../services/teacherService.js";
 import * as disciplineService from "../services/disciplineService.js";
 import * as categoryService from "../services/categoryService.js";
+import * as termService from "../services/termService.js";
 
 export async function newTest(data: {
 	name: string;
@@ -29,7 +30,7 @@ export async function newTest(data: {
 }
 
 export async function sendTestsByDiscipline() {
-	const data = await testRepository.findTestsByDiscipline();
+	const data = await termService.sendTestsByDiscipline();
 
 	return data;
 }
