@@ -5,3 +5,10 @@ export async function findByName(name: string) {
 		where: { name },
 	});
 }
+
+export async function sendTestsByDiscipline() {
+	return await prisma.term.findMany({
+		include: { discipline: true },
+		orderBy: { id: "asc" },
+	});
+}

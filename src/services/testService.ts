@@ -27,3 +27,9 @@ export async function newTest(data: {
 		teacherDisciplineId,
 	});
 }
+
+export async function sendTestsByDiscipline() {
+	const data = await testRepository.findTestsByDiscipline();
+
+	return data;
+}

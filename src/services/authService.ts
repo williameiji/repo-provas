@@ -55,7 +55,7 @@ async function generateToken(user: User) {
 			id: user.id,
 		},
 		process.env.SECRET_KEY_TOKEN,
-		{ expiresIn: 20 * 60 }
+		{ expiresIn: 60 * 60 }
 	);
 
 	return token;

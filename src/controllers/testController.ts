@@ -8,3 +8,9 @@ export async function newTest(req: Request, res: Response) {
 
 	res.sendStatus(201);
 }
+
+export async function sendTestsByDiscipline(req: Request, res: Response) {
+	const data = await testService.sendTestsByDiscipline();
+
+	res.status(200).send(data);
+}
