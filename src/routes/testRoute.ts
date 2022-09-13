@@ -9,5 +9,6 @@ const testRoute = Router();
 testRoute.use(verifyToken);
 testRoute.post("/tests", validateSchema(testSchema), testController.newTest);
 testRoute.get("/tests/disciplines", testController.sendTestsByDiscipline);
+testRoute.get("/tests/teachers", testController.sendTestsByTeachers);
 
 export default testRoute;

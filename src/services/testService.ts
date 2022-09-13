@@ -34,3 +34,9 @@ export async function sendTestsByDiscipline() {
 
 	return data;
 }
+
+export async function sendTestsByTeachers() {
+	const data = await teacherDisciplineService.sendTestsByTeachers();
+
+	return data;
+}
