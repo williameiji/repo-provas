@@ -32,7 +32,38 @@ export async function newTest(data: {
 export async function sendTestsByDiscipline() {
 	const data = await termService.sendTestsByDiscipline();
 
-	return data;
+	const data2 = data.map((item) => {
+		return {
+			period: item.number,
+			disciplines: item.discipline.map((disc) => {
+				return {
+					name: disc.name,
+					teacher: disc.teachersDisciplines[0].teacher.name,
+					category: [
+						{
+							projects: disc.teachersDisciplines[0].test
+								.map((test) => test)
+								.filter((test) => {
+									return test.category.name === "Projeto";
+								}),
+							practices: disc.teachersDisciplines[0].test
+								.map((test) => test)
+								.filter((test) => {
+									return test.category.name === "Prática";
+								}),
+							recuperation: disc.teachersDisciplines[0].test
+								.map((test) => test)
+								.filter((test) => {
+									return test.category.name === "Recuperação";
+								}),
+						},
+					],
+				};
+			}),
+		};
+	});
+
+	return data2;
 }
 
 export async function sendTestsByTeachers() {
