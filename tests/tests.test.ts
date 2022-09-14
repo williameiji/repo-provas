@@ -257,6 +257,70 @@ describe("Test /tests routes", () => {
 
 		expect(status).toEqual(401);
 	});
+
+	it("returns 401 for missing token", async () => {
+		const body = {
+			name: "Test 1",
+			pdfUrl: "https://shortly-back.herokuapp.com/urls/open/M1HmIT",
+			category: "Prática",
+			discipline: "Humildade",
+			teacher: "Bruna Hamori",
+		};
+
+		const token = await login();
+
+		const result = await supertest(app)
+			.post("/tests")
+			.set({ authorization: `Bearer `, Accept: "application/json" })
+			.send(body);
+
+		const status = result.status;
+
+		expect(status).toEqual(401);
+	});
+});
+
+describe("Test /tests/disciplines routes", () => {
+	it("returns 200 and Array for valid params", async () => {
+		const token = await login();
+
+		const result = await supertest(app)
+			.get("/tests/disciplines")
+			.set({ authorization: `Bearer ${token}`, Accept: "application/json" })
+			.send();
+
+		const status = result.status;
+		const body = result.body;
+
+		expect(status).toEqual(200);
+		expect(body).toBeInstanceOf(Array);
+	});
+
+	it("returns 401 for invalid token", async () => {
+		const token = await login();
+
+		const result = await supertest(app)
+			.get("/tests/disciplines")
+			.set({ authorization: `Bearer TEST${token}`, Accept: "application/json" })
+			.send();
+
+		const status = result.status;
+
+		expect(status).toEqual(401);
+	});
+
+	it("returns 401 for missing token", async () => {
+		const token = await login();
+
+		const result = await supertest(app)
+			.get("/tests/disciplines")
+			.set({ authorization: `Bearer `, Accept: "application/json" })
+			.send();
+
+		const status = result.status;
+
+		expect(status).toEqual(401);
+	});
 });
 
 afterAll(async () => {
