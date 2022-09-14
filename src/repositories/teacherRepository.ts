@@ -8,11 +8,22 @@ export async function findByName(name: string) {
 
 export async function findTestsByTeachers() {
 	return await prisma.teacher.findMany({
-		include: {
+		select: {
+			id: true,
+			name: true,
 			teachersDisciplines: {
-				include: {
-					discipline: true,
-					test: { include: { category: true } },
+				select: {
+					test: {
+						select: {
+							id: true,
+							name: true,
+							pdfUrl: true,
+							category: { select: { name: true } },
+							teacherDiscipline: {
+								select: { discipline: { select: { name: true } } },
+							},
+						},
+					},
 				},
 			},
 		},

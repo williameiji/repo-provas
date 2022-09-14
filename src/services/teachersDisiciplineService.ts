@@ -14,7 +14,3 @@ export async function findByNames(discipline: string, teacher: string) {
 
 	return teacherDiscipline;
 }
-
-export async function sendTestsByTeachers() {
-	return teachersDisciplinesRepository.findTestsByTeachers();
-}

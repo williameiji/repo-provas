@@ -2,15 +2,22 @@ import prisma from "../databases/database.js";
 
 export async function findTestsByDiscipline() {
 	return prisma.term.findMany({
-		include: {
+		select: {
+			number: true,
 			discipline: {
-				include: {
+				select: {
+					name: true,
 					teachersDisciplines: {
-						include: {
-							teacher: true,
+						select: {
 							test: {
-								include: {
-									category: true,
+								select: {
+									teacherDiscipline: {
+										select: { teacher: { select: { name: true } } },
+									},
+									id: true,
+									name: true,
+									pdfUrl: true,
+									category: { select: { name: true } },
 								},
 							},
 						},
