@@ -1,4 +1,4 @@
-import prisma from "../databases/database.js";
+import prisma from "../databases/database";
 import { Test } from "@prisma/client";
 
 export type TTest = Omit<Test, "id">;

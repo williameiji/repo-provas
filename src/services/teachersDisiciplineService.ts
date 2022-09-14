@@ -1,4 +1,4 @@
-import * as teachersDisciplinesRepository from "../repositories/teachersDisciplineRepository.js";
+import * as teachersDisciplinesRepository from "../repositories/teachersDisciplineRepository";
 
 export async function findByNames(discipline: string, teacher: string) {
 	const teacherDiscipline = await teachersDisciplinesRepository.findByNames(
