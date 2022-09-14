@@ -323,6 +323,49 @@ describe("Test /tests/disciplines routes", () => {
 	});
 });
 
+describe("Test /tests/teachers routes", () => {
+	it("returns 200 and Array for valid params", async () => {
+		const token = await login();
+
+		const result = await supertest(app)
+			.get("/tests/teachers")
+			.set({ authorization: `Bearer ${token}`, Accept: "application/json" })
+			.send();
+
+		const status = result.status;
+		const body = result.body;
+
+		expect(status).toEqual(200);
+		expect(body).toBeInstanceOf(Array);
+	});
+
+	it("returns 401 for invalid token", async () => {
+		const token = await login();
+
+		const result = await supertest(app)
+			.get("/tests/teachers")
+			.set({ authorization: `Bearer TEST${token}`, Accept: "application/json" })
+			.send();
+
+		const status = result.status;
+
+		expect(status).toEqual(401);
+	});
+
+	it("returns 401 for missing token", async () => {
+		const token = await login();
+
+		const result = await supertest(app)
+			.get("/tests/teachers")
+			.set({ authorization: `Bearer `, Accept: "application/json" })
+			.send();
+
+		const status = result.status;
+
+		expect(status).toEqual(401);
+	});
+});
+
 afterAll(async () => {
 	await prisma.$disconnect();
 });
