@@ -23,10 +23,10 @@ describe("Test /login routes", () => {
 
 		const result = await supertest(app).post("/login").send(body);
 		const status = result.status;
-		const token = result.body;
+		const token = result.text;
 
 		expect(status).toEqual(200);
-		expect(token).toBeInstanceOf(Object);
+		expect(typeof token).toBe("string");
 	});
 
 	it("returns 404 if user doesn't exist", async () => {
