@@ -12,7 +12,7 @@ export async function findByName(name: string) {
 export async function sendTestsByTeachers() {
 	const data = await teacherRepository.findTestsByTeachers();
 
-	const data2 = data.map((item) => {
+	const dataFiltered = data.map((item) => {
 		return {
 			id: item.id,
 			teacher: item.name,
@@ -59,5 +59,5 @@ export async function sendTestsByTeachers() {
 		};
 	});
 
-	return data2;
+	return dataFiltered;
 }

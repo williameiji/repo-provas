@@ -32,7 +32,7 @@ export async function newTest(data: {
 export async function sendTestsByDiscipline() {
 	const data = await termService.sendTestsByDiscipline();
 
-	const data2 = data.map((item) => {
+	const dataFiltered = data.map((item) => {
 		return {
 			period: item.number,
 			disciplines: item.discipline.map((disc) => {
@@ -83,7 +83,7 @@ export async function sendTestsByDiscipline() {
 		};
 	});
 
-	return data2;
+	return dataFiltered;
 }
 
 export async function sendTestsByTeachers() {
