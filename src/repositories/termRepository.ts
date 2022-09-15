@@ -17,6 +17,7 @@ export async function findTestsByDiscipline() {
 									id: true,
 									name: true,
 									pdfUrl: true,
+									createdAt: true,
 									category: { select: { name: true } },
 								},
 							},

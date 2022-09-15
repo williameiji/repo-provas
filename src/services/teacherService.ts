@@ -33,6 +33,7 @@ export async function sendTestsByTeachers() {
 							name: item.name,
 							pdfUrl: item.pdfUrl,
 							discipline: item.teacherDiscipline.discipline.name,
+							createdAt: item.createdAt,
 						};
 					}),
 				practices: item.teachersDisciplines[0].test
@@ -45,6 +46,7 @@ export async function sendTestsByTeachers() {
 							name: item.name,
 							pdfUrl: item.pdfUrl,
 							discipline: item.teacherDiscipline.discipline.name,
+							createdAt: item.createdAt,
 						};
 					}),
 				recuperation: item.teachersDisciplines[0].test
@@ -57,6 +59,7 @@ export async function sendTestsByTeachers() {
 							name: item.name,
 							pdfUrl: item.pdfUrl,
 							discipline: item.teacherDiscipline.discipline.name,
+							createdAt: item.createdAt,
 						};
 					}),
 			},

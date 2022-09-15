@@ -26,6 +26,7 @@ export async function findTestsByTeachers() {
 							id: true,
 							name: true,
 							pdfUrl: true,
+							createdAt: true,
 							category: { select: { name: true } },
 							teacherDiscipline: {
 								select: { discipline: { select: { name: true } } },
