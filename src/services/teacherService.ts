@@ -9,6 +9,12 @@ export async function findByName(name: string) {
 	return teacher;
 }
 
+export async function sendTeacherByDiscipline(id: number) {
+	const teachers = await teacherRepository.getTeacherByDiscipline(id);
+
+	return teachers;
+}
+
 export async function sendTestsByTeachers() {
 	const data = await teacherRepository.findTestsByTeachers();
 

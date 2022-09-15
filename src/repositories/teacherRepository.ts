@@ -6,6 +6,14 @@ export async function findByName(name: string) {
 	});
 }
 
+export async function getTeacherByDiscipline(id: number) {
+	return await prisma.teacher.findMany({
+		where: {
+			teachersDisciplines: { some: { disciplineId: id } },
+		},
+	});
+}
+
 export async function findTestsByTeachers() {
 	return await prisma.teacher.findMany({
 		select: {
