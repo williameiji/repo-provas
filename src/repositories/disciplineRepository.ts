@@ -1,4 +1,5 @@
 import prisma from "../databases/database";
+import { Discipline } from "@prisma/client";
 
 export async function findByName(name: string) {
 	return await prisma.discipline.findFirst({
@@ -6,9 +7,6 @@ export async function findByName(name: string) {
 	});
 }
 
-export async function sendTestsByDiscipline() {
-	return await prisma.term.findMany({
-		include: { discipline: true },
-		orderBy: { id: "asc" },
-	});
+export async function getAllDisciplines(): Promise<Discipline[]> {
+	return await prisma.discipline.findMany();
 }

@@ -8,3 +8,9 @@ export async function findByName(name: string) {
 
 	return discipline;
 }
+
+export async function sendAllDisciplines() {
+	const disciplines = await disciplineRepository.getAllDisciplines();
+
+	return disciplines;
+}
