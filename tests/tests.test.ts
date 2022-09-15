@@ -1,25 +1,21 @@
 import app from "../src";
 import supertest from "supertest";
 import prisma from "../src/databases/database";
+import signupFactory from "./factories/signupFactory";
+import loginFactory from "./factories/loginFactory";
+import testsFactory from "./factories/testsFactory";
 
 beforeEach(async () => {
 	await prisma.$executeRaw`TRUNCATE TABLE tests;`;
 	await prisma.$executeRaw`TRUNCATE TABLE users;`;
 
-	const bodySignup = {
-		email: "teste@driven.com.br",
-		password: "1234",
-		refPassword: "1234",
-	};
+	const body = signupFactory();
 
-	await supertest(app).post("/signup").send(bodySignup);
+	await supertest(app).post("/signup").send(body);
 });
 
 async function login() {
-	const body = {
-		email: "teste@driven.com.br",
-		password: "1234",
-	};
+	const body = loginFactory();
 
 	const result = await supertest(app).post("/login").send(body);
 
@@ -28,13 +24,7 @@ async function login() {
 
 describe("Test /tests routes", () => {
 	it("returns 201 for valid params", async () => {
-		const body = {
-			name: "Test 1",
-			pdfUrl: "https://shortly-back.herokuapp.com/urls/open/M1HmIT",
-			category: "Prática",
-			discipline: "Humildade",
-			teacher: "Bruna Hamori",
-		};
+		const body = testsFactory();
 
 		const token = await login();
 
@@ -49,20 +39,14 @@ describe("Test /tests routes", () => {
 	});
 
 	it("returns 422 for empty name", async () => {
-		const body = {
-			name: "",
-			pdfUrl: "https://shortly-back.herokuapp.com/urls/open/M1HmIT",
-			category: "Prática",
-			discipline: "Humildade",
-			teacher: "Bruna Hamori",
-		};
+		const body = testsFactory();
 
 		const token = await login();
 
 		const result = await supertest(app)
 			.post("/tests")
 			.set({ authorization: `Bearer ${token}`, Accept: "application/json" })
-			.send(body);
+			.send({ ...body, name: "" });
 
 		const status = result.status;
 
@@ -70,20 +54,14 @@ describe("Test /tests routes", () => {
 	});
 
 	it("returns 422 for empty pdfUrl", async () => {
-		const body = {
-			name: "Test 1",
-			pdfUrl: "",
-			category: "Prática",
-			discipline: "Humildade",
-			teacher: "Bruna Hamori",
-		};
+		const body = testsFactory();
 
 		const token = await login();
 
 		const result = await supertest(app)
 			.post("/tests")
 			.set({ authorization: `Bearer ${token}`, Accept: "application/json" })
-			.send(body);
+			.send({ ...body, pdfUrl: "" });
 
 		const status = result.status;
 
@@ -91,20 +69,14 @@ describe("Test /tests routes", () => {
 	});
 
 	it("returns 422 for empty category", async () => {
-		const body = {
-			name: "Test 1",
-			pdfUrl: "https://shortly-back.herokuapp.com/urls/open/M1HmIT",
-			category: "",
-			discipline: "Humildade",
-			teacher: "Bruna Hamori",
-		};
+		const body = testsFactory();
 
 		const token = await login();
 
 		const result = await supertest(app)
 			.post("/tests")
 			.set({ authorization: `Bearer ${token}`, Accept: "application/json" })
-			.send(body);
+			.send({ ...body, category: "" });
 
 		const status = result.status;
 
@@ -112,20 +84,14 @@ describe("Test /tests routes", () => {
 	});
 
 	it("returns 422 for empty discipline", async () => {
-		const body = {
-			name: "Test 1",
-			pdfUrl: "https://shortly-back.herokuapp.com/urls/open/M1HmIT",
-			category: "Prática",
-			discipline: "",
-			teacher: "Bruna Hamori",
-		};
+		const body = testsFactory();
 
 		const token = await login();
 
 		const result = await supertest(app)
 			.post("/tests")
 			.set({ authorization: `Bearer ${token}`, Accept: "application/json" })
-			.send(body);
+			.send({ ...body, discipline: "" });
 
 		const status = result.status;
 
@@ -133,20 +99,14 @@ describe("Test /tests routes", () => {
 	});
 
 	it("returns 422 for empty teacher", async () => {
-		const body = {
-			name: "Test 1",
-			pdfUrl: "https://shortly-back.herokuapp.com/urls/open/M1HmIT",
-			category: "Prática",
-			discipline: "Humildade",
-			teacher: "",
-		};
+		const body = testsFactory();
 
 		const token = await login();
 
 		const result = await supertest(app)
 			.post("/tests")
 			.set({ authorization: `Bearer ${token}`, Accept: "application/json" })
-			.send(body);
+			.send({ ...body, teacher: "" });
 
 		const status = result.status;
 
@@ -154,20 +114,14 @@ describe("Test /tests routes", () => {
 	});
 
 	it("returns 422 for wrong type of url", async () => {
-		const body = {
-			name: "Test 1",
-			pdfUrl: "shortly-back.herokuapp.com/urls/open/M1HmIT",
-			category: "Prática",
-			discipline: "Humildade",
-			teacher: "Bruna Hamori",
-		};
+		const body = testsFactory();
 
 		const token = await login();
 
 		const result = await supertest(app)
 			.post("/tests")
 			.set({ authorization: `Bearer ${token}`, Accept: "application/json" })
-			.send(body);
+			.send({ ...body, pdfUrl: "shortly-back.herokuapp.com/urls/open/M1HmIT" });
 
 		const status = result.status;
 
@@ -175,20 +129,14 @@ describe("Test /tests routes", () => {
 	});
 
 	it("returns 404 for discipline that doesn't exist", async () => {
-		const body = {
-			name: "Test 1",
-			pdfUrl: "https://shortly-back.herokuapp.com/urls/open/M1HmIT",
-			category: "Prática",
-			discipline: "Test",
-			teacher: "Bruna Hamori",
-		};
+		const body = testsFactory();
 
 		const token = await login();
 
 		const result = await supertest(app)
 			.post("/tests")
 			.set({ authorization: `Bearer ${token}`, Accept: "application/json" })
-			.send(body);
+			.send({ ...body, discipline: "Test" });
 
 		const status = result.status;
 
@@ -196,20 +144,14 @@ describe("Test /tests routes", () => {
 	});
 
 	it("returns 404 for teacher that doesn't exist", async () => {
-		const body = {
-			name: "Test 1",
-			pdfUrl: "https://shortly-back.herokuapp.com/urls/open/M1HmIT",
-			category: "Prática",
-			discipline: "Humildade",
-			teacher: "Test",
-		};
+		const body = testsFactory();
 
 		const token = await login();
 
 		const result = await supertest(app)
 			.post("/tests")
 			.set({ authorization: `Bearer ${token}`, Accept: "application/json" })
-			.send(body);
+			.send({ ...body, teacher: "Test" });
 
 		const status = result.status;
 
@@ -217,20 +159,14 @@ describe("Test /tests routes", () => {
 	});
 
 	it("returns 404 for category that doesn't exist", async () => {
-		const body = {
-			name: "Test 1",
-			pdfUrl: "https://shortly-back.herokuapp.com/urls/open/M1HmIT",
-			category: "Test",
-			discipline: "Humildade",
-			teacher: "Bruna Hamori",
-		};
+		const body = testsFactory();
 
 		const token = await login();
 
 		const result = await supertest(app)
 			.post("/tests")
 			.set({ authorization: `Bearer ${token}`, Accept: "application/json" })
-			.send(body);
+			.send({ ...body, category: "Test" });
 
 		const status = result.status;
 
@@ -238,13 +174,7 @@ describe("Test /tests routes", () => {
 	});
 
 	it("returns 401 for invalid token", async () => {
-		const body = {
-			name: "Test 1",
-			pdfUrl: "https://shortly-back.herokuapp.com/urls/open/M1HmIT",
-			category: "Prática",
-			discipline: "Humildade",
-			teacher: "Bruna Hamori",
-		};
+		const body = testsFactory();
 
 		const token = await login();
 
@@ -259,13 +189,7 @@ describe("Test /tests routes", () => {
 	});
 
 	it("returns 401 for missing token", async () => {
-		const body = {
-			name: "Test 1",
-			pdfUrl: "https://shortly-back.herokuapp.com/urls/open/M1HmIT",
-			category: "Prática",
-			discipline: "Humildade",
-			teacher: "Bruna Hamori",
-		};
+		const body = testsFactory();
 
 		const token = await login();
 
@@ -345,19 +269,6 @@ describe("Test /tests/teachers routes", () => {
 		const result = await supertest(app)
 			.get("/tests/teachers")
 			.set({ authorization: `Bearer TEST${token}`, Accept: "application/json" })
-			.send();
-
-		const status = result.status;
-
-		expect(status).toEqual(401);
-	});
-
-	it("returns 401 for missing token", async () => {
-		const token = await login();
-
-		const result = await supertest(app)
-			.get("/tests/teachers")
-			.set({ authorization: `Bearer `, Accept: "application/json" })
 			.send();
 
 		const status = result.status;
