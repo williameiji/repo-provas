@@ -8,3 +8,9 @@ export async function findByName(name: string) {
 
 	return category;
 }
+
+export async function sendCategories() {
+	const categories = await categoryRepository.getAllCategories();
+
+	return categories;
+}
