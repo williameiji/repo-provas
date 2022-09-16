@@ -1,4 +1,4 @@
-export default function signupFactory() {
+export default async function signupFactory() {
 	return {
 		email: "teste@driven.com.br",
 		password: "1234",

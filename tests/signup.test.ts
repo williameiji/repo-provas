@@ -9,20 +9,22 @@ beforeEach(async () => {
 
 describe("Test /signup routes", () => {
 	it("returns 201 for valid params", async () => {
-		const body = signupFactory();
+		const body = await signupFactory();
 
 		const result = await supertest(app).post("/signup").send(body);
 		const status = result.status;
+		console.log(result.body);
 
 		const user = await prisma.user.findUnique({
 			where: { email: body.email },
 		});
+
 		expect(status).toEqual(201);
 		expect(user).not.toBeNull();
 	});
 
 	it("returns 409 if user already exist", async () => {
-		const body = signupFactory();
+		const body = await signupFactory();
 
 		await supertest(app).post("/signup").send(body);
 		const result = await supertest(app).post("/signup").send(body);
@@ -36,7 +38,7 @@ describe("Test /signup routes", () => {
 	});
 
 	it("returns 422 for incorrect email", async () => {
-		const body = signupFactory();
+		const body = await signupFactory();
 
 		const result = await supertest(app)
 			.post("/signup")
@@ -47,7 +49,7 @@ describe("Test /signup routes", () => {
 	});
 
 	it("returns 422 for incorrect refPassword", async () => {
-		const body = signupFactory();
+		const body = await signupFactory();
 
 		const result = await supertest(app)
 			.post("/signup")
@@ -58,7 +60,7 @@ describe("Test /signup routes", () => {
 	});
 
 	it("returns 422 for less then 4 characters in password", async () => {
-		const body = signupFactory();
+		const body = await signupFactory();
 
 		const result = await supertest(app)
 			.post("/signup")
@@ -69,7 +71,7 @@ describe("Test /signup routes", () => {
 	});
 
 	it("returns 422 for less then 4 characters in refPassword", async () => {
-		const body = signupFactory();
+		const body = await signupFactory();
 
 		const result = await supertest(app)
 			.post("/signup")

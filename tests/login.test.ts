@@ -7,14 +7,14 @@ import loginFactory from "./factories/loginFactory";
 beforeEach(async () => {
 	await prisma.$executeRaw`TRUNCATE TABLE users;`;
 
-	const bodySignup = signupFactory();
+	const bodySignup = await signupFactory();
 
 	await supertest(app).post("/signup").send(bodySignup);
 });
 
 describe("Test /login routes", () => {
 	it("returns 200 and token for valid params", async () => {
-		const body = loginFactory();
+		const body = await loginFactory();
 
 		const result = await supertest(app).post("/login").send(body);
 		const status = result.status;
@@ -25,7 +25,7 @@ describe("Test /login routes", () => {
 	});
 
 	it("returns 404 if user doesn't exist", async () => {
-		const body = loginFactory();
+		const body = await loginFactory();
 
 		const result = await supertest(app)
 			.post("/login")
@@ -36,7 +36,7 @@ describe("Test /login routes", () => {
 	});
 
 	it("returns 422 for incorrect email", async () => {
-		const body = loginFactory();
+		const body = await loginFactory();
 
 		const result = await supertest(app)
 			.post("/login")
@@ -47,7 +47,7 @@ describe("Test /login routes", () => {
 	});
 
 	it("returns 401 for incorrect password", async () => {
-		const body = loginFactory();
+		const body = await loginFactory();
 
 		const result = await supertest(app)
 			.post("/login")
@@ -58,7 +58,7 @@ describe("Test /login routes", () => {
 	});
 
 	it("returns 422 for less then 4 characters in password", async () => {
-		const body = loginFactory();
+		const body = await loginFactory();
 
 		const result = await supertest(app)
 			.post("/login")

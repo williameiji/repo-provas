@@ -9,13 +9,13 @@ beforeEach(async () => {
 	await prisma.$executeRaw`TRUNCATE TABLE tests;`;
 	await prisma.$executeRaw`TRUNCATE TABLE users;`;
 
-	const body = signupFactory();
+	const body = await signupFactory();
 
 	await supertest(app).post("/signup").send(body);
 });
 
 async function login() {
-	const body = loginFactory();
+	const body = await loginFactory();
 
 	const result = await supertest(app).post("/login").send(body);
 
@@ -24,7 +24,7 @@ async function login() {
 
 describe("Test /tests routes", () => {
 	it("returns 201 for valid params", async () => {
-		const body = testsFactory();
+		const body = await testsFactory();
 
 		const token = await login();
 
@@ -39,7 +39,7 @@ describe("Test /tests routes", () => {
 	});
 
 	it("returns 422 for empty name", async () => {
-		const body = testsFactory();
+		const body = await testsFactory();
 
 		const token = await login();
 
@@ -54,7 +54,7 @@ describe("Test /tests routes", () => {
 	});
 
 	it("returns 422 for empty pdfUrl", async () => {
-		const body = testsFactory();
+		const body = await testsFactory();
 
 		const token = await login();
 
@@ -69,7 +69,7 @@ describe("Test /tests routes", () => {
 	});
 
 	it("returns 422 for empty category", async () => {
-		const body = testsFactory();
+		const body = await testsFactory();
 
 		const token = await login();
 
@@ -84,7 +84,7 @@ describe("Test /tests routes", () => {
 	});
 
 	it("returns 422 for empty discipline", async () => {
-		const body = testsFactory();
+		const body = await testsFactory();
 
 		const token = await login();
 
@@ -99,7 +99,7 @@ describe("Test /tests routes", () => {
 	});
 
 	it("returns 422 for empty teacher", async () => {
-		const body = testsFactory();
+		const body = await testsFactory();
 
 		const token = await login();
 
@@ -114,7 +114,7 @@ describe("Test /tests routes", () => {
 	});
 
 	it("returns 422 for wrong type of url", async () => {
-		const body = testsFactory();
+		const body = await testsFactory();
 
 		const token = await login();
 
@@ -129,7 +129,7 @@ describe("Test /tests routes", () => {
 	});
 
 	it("returns 404 for discipline that doesn't exist", async () => {
-		const body = testsFactory();
+		const body = await testsFactory();
 
 		const token = await login();
 
@@ -144,7 +144,7 @@ describe("Test /tests routes", () => {
 	});
 
 	it("returns 404 for teacher that doesn't exist", async () => {
-		const body = testsFactory();
+		const body = await testsFactory();
 
 		const token = await login();
 
@@ -159,7 +159,7 @@ describe("Test /tests routes", () => {
 	});
 
 	it("returns 404 for category that doesn't exist", async () => {
-		const body = testsFactory();
+		const body = await testsFactory();
 
 		const token = await login();
 
@@ -174,7 +174,7 @@ describe("Test /tests routes", () => {
 	});
 
 	it("returns 401 for invalid token", async () => {
-		const body = testsFactory();
+		const body = await testsFactory();
 
 		const token = await login();
 
@@ -189,7 +189,7 @@ describe("Test /tests routes", () => {
 	});
 
 	it("returns 401 for missing token", async () => {
-		const body = testsFactory();
+		const body = await testsFactory();
 
 		const token = await login();
 
