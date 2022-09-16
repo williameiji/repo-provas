@@ -7,7 +7,7 @@
 		"build": "npx tsc && npx prisma generate && npx prisma migrate deploy",
 		"start": "node ./dist/src/server.js",
 		"dev": "nodemon ./src/server.ts",
-		"test": "jest -i"
+		"test": "dotenv -e .env.test prisma migrate dev && dotenv -e .env.test prisma db seed && dotenv -e .env.test jest -i"
 	},
 	"prisma": {
 		"seed": "ts-node prisma/seed.ts"
