@@ -6,17 +6,17 @@ import loginFactory from "./factories/loginFactory";
 
 beforeEach(async () => {
 	await prisma.$executeRaw`TRUNCATE TABLE users;`;
-
-	const bodySignup = await signupFactory();
-
-	await supertest(app).post("/signup").send(bodySignup);
 });
 
 describe("Test /login routes", () => {
 	it("returns 200 and token for valid params", async () => {
-		const body = await loginFactory();
+		const bodySignup = await signupFactory();
 
-		const result = await supertest(app).post("/login").send(body);
+		await supertest(app).post("/signup").send(bodySignup);
+
+		const result = await supertest(app)
+			.post("/login")
+			.send({ email: bodySignup.email, password: bodySignup.password });
 		const status = result.status;
 		const token = result.text;
 
@@ -47,11 +47,14 @@ describe("Test /login routes", () => {
 	});
 
 	it("returns 401 for incorrect password", async () => {
-		const body = await loginFactory();
+		const bodySignup = await signupFactory();
 
-		const result = await supertest(app)
-			.post("/login")
-			.send({ ...body, password: "4321" });
+		await supertest(app).post("/signup").send(bodySignup);
+
+		const result = await supertest(app).post("/login").send({
+			email: bodySignup.email,
+			password: "9999999999999999999999999999999",
+		});
 		const status = result.status;
 
 		expect(status).toEqual(401);

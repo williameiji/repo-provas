@@ -13,7 +13,6 @@ describe("Test /signup routes", () => {
 
 		const result = await supertest(app).post("/signup").send(body);
 		const status = result.status;
-		console.log(result.body);
 
 		const user = await prisma.user.findUnique({
 			where: { email: body.email },
