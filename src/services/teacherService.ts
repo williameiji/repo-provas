@@ -1,4 +1,5 @@
 import * as teacherRepository from "../repositories/teacherRepository";
+import { Categories } from "../types/teachersType";
 
 export async function findByName(name: string) {
 	const teacher = await teacherRepository.findByName(name);
@@ -23,48 +24,50 @@ export async function sendTestsByTeachers() {
 			id: item.id,
 			teacher: item.name,
 			categories: {
-				projects: item.teachersDisciplines[0].test
-					.filter((test) => {
-						return test.category.name === "Projeto";
-					})
-					.map((item) => {
-						return {
-							id: item.id,
-							name: item.name,
-							pdfUrl: item.pdfUrl,
-							discipline: item.teacherDiscipline.discipline.name,
-							createdAt: item.createdAt,
-						};
-					}),
-				practices: item.teachersDisciplines[0].test
-					.filter((test) => {
-						return test.category.name === "Prática";
-					})
-					.map((item) => {
-						return {
-							id: item.id,
-							name: item.name,
-							pdfUrl: item.pdfUrl,
-							discipline: item.teacherDiscipline.discipline.name,
-							createdAt: item.createdAt,
-						};
-					}),
-				recuperation: item.teachersDisciplines[0].test
-					.filter((test) => {
-						return test.category.name === "Recuperação";
-					})
-					.map((item) => {
-						return {
-							id: item.id,
-							name: item.name,
-							pdfUrl: item.pdfUrl,
-							discipline: item.teacherDiscipline.discipline.name,
-							createdAt: item.createdAt,
-						};
-					}),
+				projects: filterDataToProject(item.teachersDisciplines[0].test),
+				practices: filterDataToPractice(item.teachersDisciplines[0].test),
+				recuperation: filterDataToRecuperation(
+					item.teachersDisciplines[0].test
+				),
 			},
 		};
 	});
 
 	return dataFiltered;
+}
+
+function filterDataToProject(project: Categories[]) {
+	return project
+		.filter((test) => test.category.name === "Projeto")
+		.map((item) => {
+			return {
+				name: item.name,
+				discipline: item.teacherDiscipline.discipline.name,
+				createdAt: item.createdAt,
+			};
+		});
+}
+
+function filterDataToPractice(practice: Categories[]) {
+	return practice
+		.filter((test) => test.category.name === "Prática")
+		.map((item) => {
+			return {
+				name: item.name,
+				discipline: item.teacherDiscipline.discipline.name,
+				createdAt: item.createdAt,
+			};
+		});
+}
+
+function filterDataToRecuperation(recuperation: Categories[]) {
+	return recuperation
+		.filter((test) => test.category.name === "Recuperação")
+		.map((item) => {
+			return {
+				name: item.name,
+				discipline: item.teacherDiscipline.discipline.name,
+				createdAt: item.createdAt,
+			};
+		});
 }
