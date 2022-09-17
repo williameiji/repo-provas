@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import * as authService from "../services/authService";
-import axios from "axios";
 
 export async function signup(req: Request, res: Response) {
 	const data = req.body as {
@@ -27,5 +26,5 @@ export async function loginGit(req: Request, res: Response) {
 
 	const token = await authService.loginGit(code);
 
-	res.send(200).send(token);
+	res.status(200).send(token);
 }
