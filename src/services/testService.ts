@@ -39,13 +39,7 @@ export async function sendTestsByDiscipline() {
 			disciplines: item.discipline.map((disc) => {
 				return {
 					name: disc.name,
-					category: {
-						projects: filterDataToProject(disc.teachersDisciplines[0].test),
-						practices: filterDataToPractice(disc.teachersDisciplines[0].test),
-						recuperation: filterDataToRecuperation(
-							disc.teachersDisciplines[0].test
-						),
-					},
+					category: filterDataByCategory(disc.teachersDisciplines[0].test),
 				};
 			}),
 		};
@@ -60,38 +54,42 @@ export async function sendTestsByTeachers() {
 	return data;
 }
 
-function filterDataToProject(project: Discipline[]) {
-	return project
-		.filter((test) => test.category.name === "Projeto")
-		.map((item) => {
-			return {
-				name: item.name,
-				discipline: item.teacherDiscipline.teacher.name,
-				createdAt: item.createdAt,
-			};
-		});
-}
+function filterDataByCategory(category: Discipline[]) {
+	const categories = {
+		projects: [],
+		practices: [],
+		recuperation: [],
+	};
 
-function filterDataToPractice(practice: Discipline[]) {
-	return practice
-		.filter((test) => test.category.name === "Prática")
-		.map((item) => {
-			return {
-				name: item.name,
-				discipline: item.teacherDiscipline.teacher.name,
-				createdAt: item.createdAt,
-			};
-		});
-}
+	category.map((item) => {
+		if (item.category.name === "Projeto") {
+			categories.projects.push(
+				teacherService.CreateCategory(
+					item.name,
+					item.teacherDiscipline.teacher.name,
+					item.createdAt
+				)
+			);
+		}
+		if (item.category.name === "Prática") {
+			categories.practices.push(
+				teacherService.CreateCategory(
+					item.name,
+					item.teacherDiscipline.teacher.name,
+					item.createdAt
+				)
+			);
+		}
+		if (item.category.name === "Recuperação") {
+			categories.recuperation.push(
+				teacherService.CreateCategory(
+					item.name,
+					item.teacherDiscipline.teacher.name,
+					item.createdAt
+				)
+			);
+		}
+	});
 
-function filterDataToRecuperation(recuperation: Discipline[]) {
-	return recuperation
-		.filter((test) => test.category.name === "Recuperação")
-		.map((item) => {
-			return {
-				name: item.name,
-				discipline: item.teacherDiscipline.teacher.name,
-				createdAt: item.createdAt,
-			};
-		});
+	return categories;
 }

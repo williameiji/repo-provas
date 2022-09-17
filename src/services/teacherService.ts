@@ -23,51 +23,59 @@ export async function sendTestsByTeachers() {
 		return {
 			id: item.id,
 			teacher: item.name,
-			categories: {
-				projects: filterDataToProject(item.teachersDisciplines[0].test),
-				practices: filterDataToPractice(item.teachersDisciplines[0].test),
-				recuperation: filterDataToRecuperation(
-					item.teachersDisciplines[0].test
-				),
-			},
+			categories: filterDataByCategory(item.teachersDisciplines[0].test),
 		};
 	});
 
 	return dataFiltered;
 }
 
-function filterDataToProject(project: Categories[]) {
-	return project
-		.filter((test) => test.category.name === "Projeto")
-		.map((item) => {
-			return {
-				name: item.name,
-				discipline: item.teacherDiscipline.discipline.name,
-				createdAt: item.createdAt,
-			};
-		});
-}
+export const CreateCategory = (
+	name: string,
+	discipline: string,
+	createdAt: Date
+) => ({
+	name,
+	discipline,
+	createdAt,
+});
 
-function filterDataToPractice(practice: Categories[]) {
-	return practice
-		.filter((test) => test.category.name === "Prática")
-		.map((item) => {
-			return {
-				name: item.name,
-				discipline: item.teacherDiscipline.discipline.name,
-				createdAt: item.createdAt,
-			};
-		});
-}
+function filterDataByCategory(category: Categories[]) {
+	const categories = {
+		projects: [],
+		practices: [],
+		recuperation: [],
+	};
 
-function filterDataToRecuperation(recuperation: Categories[]) {
-	return recuperation
-		.filter((test) => test.category.name === "Recuperação")
-		.map((item) => {
-			return {
-				name: item.name,
-				discipline: item.teacherDiscipline.discipline.name,
-				createdAt: item.createdAt,
-			};
-		});
+	category.map((item) => {
+		if (item.category.name === "Projeto") {
+			categories.projects.push(
+				CreateCategory(
+					item.name,
+					item.teacherDiscipline.discipline.name,
+					item.createdAt
+				)
+			);
+		}
+		if (item.category.name === "Prática") {
+			categories.practices.push(
+				CreateCategory(
+					item.name,
+					item.teacherDiscipline.discipline.name,
+					item.createdAt
+				)
+			);
+		}
+		if (item.category.name === "Recuperação") {
+			categories.recuperation.push(
+				CreateCategory(
+					item.name,
+					item.teacherDiscipline.discipline.name,
+					item.createdAt
+				)
+			);
+		}
+	});
+
+	return categories;
 }
