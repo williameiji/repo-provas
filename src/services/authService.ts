@@ -68,8 +68,6 @@ export async function loginGit(code: string) {
 
 	const userData = await getUserDataFromGithub(access_token);
 
-	console.log(userData);
-
 	const user = await userRepository.findByEmail(userData.data.email);
 
 	if (user)
