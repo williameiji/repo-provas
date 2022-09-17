@@ -10,3 +10,7 @@ export async function findByEmail(email: string): Promise<User> {
 export async function insert(data: TUser) {
 	await prisma.user.create({ data });
 }
+
+export async function getAllUsers(): Promise<User[]> {
+	return await prisma.user.findMany();
+}

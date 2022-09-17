@@ -5,6 +5,7 @@ import * as disciplineService from "../services/disciplineService";
 import * as categoryService from "../services/categoryService";
 import * as termService from "../services/termService";
 import { Discipline } from "../types/disciplineTypes";
+import { sendEmails } from "../utils/sendEmails";
 
 export async function newTest(data: {
 	name: string;
@@ -28,6 +29,12 @@ export async function newTest(data: {
 		categoryId,
 		teacherDisciplineId,
 	});
+
+	const message = `${data.teacher} ${
+		data.category
+	} ${new Date().getFullYear()} - ${data.name} (${data.category})`;
+
+	await sendEmails(data);
 }
 
 export async function sendTestsByDiscipline() {

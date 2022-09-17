@@ -41,6 +41,10 @@ async function getUser(email: string) {
 	return await userRepository.findByEmail(email);
 }
 
+export async function getAllUsers() {
+	return await userRepository.getAllUsers();
+}
+
 async function verifyPassword(user: User, password: string) {
 	if (user && bcrypt.compareSync(password, user.password)) {
 		const token = await generateToken(user);
