@@ -60,3 +60,5 @@ async function generateToken(user: User) {
 
 	return token;
 }
+
+export async function loginGit(code: string) {}

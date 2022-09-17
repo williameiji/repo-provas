@@ -22,4 +22,10 @@ export async function login(req: Request, res: Response) {
 	res.status(200).send(token);
 }
 
-export async function loginGit(req: Request, res: Response) {}
+export async function loginGit(req: Request, res: Response) {
+	const { code } = req.body;
+
+	const token = await authService.loginGit(code);
+
+	res.send(200).send(token);
+}
