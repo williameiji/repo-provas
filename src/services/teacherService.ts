@@ -32,10 +32,12 @@ export async function sendTestsByTeachers() {
 
 export const CreateCategory = (
 	name: string,
+	pdfUrl: string,
 	discipline: string,
 	createdAt: Date
 ) => ({
 	name,
+	pdfUrl,
 	discipline,
 	createdAt,
 });
@@ -52,6 +54,7 @@ function filterDataByCategory(category: Categories[]) {
 			categories.projects.push(
 				CreateCategory(
 					item.name,
+					item.pdfUrl,
 					item.teacherDiscipline.discipline.name,
 					item.createdAt
 				)
@@ -61,6 +64,7 @@ function filterDataByCategory(category: Categories[]) {
 			categories.practices.push(
 				CreateCategory(
 					item.name,
+					item.pdfUrl,
 					item.teacherDiscipline.discipline.name,
 					item.createdAt
 				)
@@ -70,6 +74,7 @@ function filterDataByCategory(category: Categories[]) {
 			categories.recuperation.push(
 				CreateCategory(
 					item.name,
+					item.pdfUrl,
 					item.teacherDiscipline.discipline.name,
 					item.createdAt
 				)
