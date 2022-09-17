@@ -4,6 +4,7 @@ import * as teacherService from "../services/teacherService";
 import * as disciplineService from "../services/disciplineService";
 import * as categoryService from "../services/categoryService";
 import * as termService from "../services/termService";
+import { Discipline } from "../types/disciplineTypes";
 
 export async function newTest(data: {
 	name: string;
@@ -39,45 +40,11 @@ export async function sendTestsByDiscipline() {
 				return {
 					name: disc.name,
 					category: {
-						projects: disc.teachersDisciplines[0].test
-							.filter((test) => {
-								return test.category.name === "Projeto";
-							})
-							.map((item) => {
-								return {
-									id: item.id,
-									name: item.name,
-									pdfUrl: item.pdfUrl,
-									teacher: item.teacherDiscipline.teacher.name,
-									createdAt: item.createdAt,
-								};
-							}),
-						practices: disc.teachersDisciplines[0].test
-							.filter((test) => {
-								return test.category.name === "Prática";
-							})
-							.map((item) => {
-								return {
-									id: item.id,
-									name: item.name,
-									pdfUrl: item.pdfUrl,
-									teacher: item.teacherDiscipline.teacher.name,
-									createdAt: item.createdAt,
-								};
-							}),
-						recuperation: disc.teachersDisciplines[0].test
-							.filter((test) => {
-								return test.category.name === "Recuperação";
-							})
-							.map((item) => {
-								return {
-									id: item.id,
-									name: item.name,
-									pdfUrl: item.pdfUrl,
-									teacher: item.teacherDiscipline.teacher.name,
-									createdAt: item.createdAt,
-								};
-							}),
+						projects: filterDataToProject(disc.teachersDisciplines[0].test),
+						practices: filterDataToPractice(disc.teachersDisciplines[0].test),
+						recuperation: filterDataToRecuperation(
+							disc.teachersDisciplines[0].test
+						),
 					},
 				};
 			}),
@@ -91,4 +58,40 @@ export async function sendTestsByTeachers() {
 	const data = await teacherService.sendTestsByTeachers();
 
 	return data;
+}
+
+function filterDataToProject(project: Discipline[]) {
+	return project
+		.filter((test) => test.category.name === "Projeto")
+		.map((item) => {
+			return {
+				name: item.name,
+				discipline: item.teacherDiscipline.teacher.name,
+				createdAt: item.createdAt,
+			};
+		});
+}
+
+function filterDataToPractice(practice: Discipline[]) {
+	return practice
+		.filter((test) => test.category.name === "Prática")
+		.map((item) => {
+			return {
+				name: item.name,
+				discipline: item.teacherDiscipline.teacher.name,
+				createdAt: item.createdAt,
+			};
+		});
+}
+
+function filterDataToRecuperation(recuperation: Discipline[]) {
+	return recuperation
+		.filter((test) => test.category.name === "Recuperação")
+		.map((item) => {
+			return {
+				name: item.name,
+				discipline: item.teacherDiscipline.teacher.name,
+				createdAt: item.createdAt,
+			};
+		});
 }
