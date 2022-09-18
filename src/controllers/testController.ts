@@ -16,7 +16,15 @@ export async function sendTestsByDiscipline(req: Request, res: Response) {
 }
 
 export async function sendTestsByTeachers(req: Request, res: Response) {
-	const data = await testService.sendTestsByTeachers();
+	const { search } = req.query;
 
-	res.status(200).send(data);
+	if (search) {
+		const data = await testService.sendTestsByTeachersName(String(search));
+
+		return res.status(200).send(data);
+	} else {
+		const data = await testService.sendTestsByTeachers();
+
+		return res.status(200).send(data);
+	}
 }

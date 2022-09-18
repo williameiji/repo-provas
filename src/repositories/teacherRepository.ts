@@ -38,3 +38,29 @@ export async function findTestsByTeachers() {
 		},
 	});
 }
+
+export async function findTestsByTeachersName(name: string) {
+	return await prisma.teacher.findMany({
+		where: { name: { contains: name, mode: "insensitive" } },
+		select: {
+			id: true,
+			name: true,
+			teachersDisciplines: {
+				select: {
+					test: {
+						select: {
+							id: true,
+							name: true,
+							pdfUrl: true,
+							createdAt: true,
+							category: { select: { name: true } },
+							teacherDiscipline: {
+								select: { discipline: { select: { name: true } } },
+							},
+						},
+					},
+				},
+			},
+		},
+	});
+}

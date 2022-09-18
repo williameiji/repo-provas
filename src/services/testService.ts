@@ -57,6 +57,12 @@ export async function sendTestsByTeachers() {
 	return data;
 }
 
+export async function sendTestsByTeachersName(name: string) {
+	const data = await teacherService.sendTestsByTeachersName(name);
+
+	return data;
+}
+
 export const CreateCategory = (
 	name: string,
 	pdfUrl: string,

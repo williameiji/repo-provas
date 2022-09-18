@@ -84,3 +84,17 @@ function filterDataByCategory(category: Categories[]) {
 
 	return categories;
 }
+
+export async function sendTestsByTeachersName(name: string) {
+	const data = await teacherRepository.findTestsByTeachersName(name);
+
+	const dataFiltered = data.map((item) => {
+		return {
+			id: item.id,
+			teacher: item.name,
+			categories: filterDataByCategory(item.teachersDisciplines[0].test),
+		};
+	});
+
+	return dataFiltered;
+}
