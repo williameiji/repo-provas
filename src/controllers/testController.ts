@@ -10,9 +10,17 @@ export async function newTest(req: Request, res: Response) {
 }
 
 export async function sendTestsByDiscipline(req: Request, res: Response) {
-	const data = await testService.sendTestsByDiscipline();
+	const { search } = req.query;
 
-	res.status(200).send(data);
+	if (search) {
+		const data = await testService.sendTestsByDisciplineName(String(search));
+
+		return res.status(200).send(data);
+	} else {
+		const data = await testService.sendTestsByDiscipline();
+
+		return res.status(200).send(data);
+	}
 }
 
 export async function sendTestsByTeachers(req: Request, res: Response) {
