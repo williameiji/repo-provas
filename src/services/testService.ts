@@ -30,11 +30,7 @@ export async function newTest(data: {
 		teacherDisciplineId,
 	});
 
-	const message = `${data.teacher} ${
-		data.category
-	} ${new Date().getFullYear()} - ${data.name} (${data.category})`;
-
-	await sendEmails(data);
+	sendEmails(data);
 }
 
 export async function sendTestsByDiscipline() {
