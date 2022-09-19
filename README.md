@@ -3,7 +3,7 @@
 Check project frontend [here](https://github.com/williameiji/repo-provas-frontend)
 
 
-##  :clipboard: Descrição
+##  :clipboard: Description
 
 A system for sharing tests between students, where anyone can look up old tests from their subjects and teachers or submit old tests
 
